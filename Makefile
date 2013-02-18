@@ -27,6 +27,19 @@ docs: js
 #
 # BUILD
 #
+build:
+	@git checkout build
+	@make clean
+	@make js
+	@mkdir -p docs/assets/js
+	@cp $(BUILD)/vanilla.elegant.js -t docs/assets/js
+	@git add -f dist
+	@git add docs/assets/js
+	@git commit -m "update build"
+	@git checkout master
+	@git merge build
+
+
 js: $(JSOBJS_COMPRESSED)
 
 
