@@ -117,7 +117,7 @@
       if (!(m = getMirror(el))) return;
 
       el.style.height = '';
-      el.style.height = w.getComputedStyle(m)['height'];
+      el.style.height = w.getComputedStyle(m).height;
     };
 
     /**
