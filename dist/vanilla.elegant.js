@@ -79,10 +79,10 @@
 
     /**
      * Convert string with hyphens to camelCase (useful for convert css style
-     * property to camelCase)
+     * property to valid object property).
      *
      * @param {String} s The input string
-     * @return {String} The camelCase strict
+     * @return {String} The camelCase string
      */
     function toCamelCase(s) {
       return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
@@ -117,7 +117,7 @@
       if (!(m = getMirror(el))) return;
 
       el.style.height = '';
-      el.style.height = w.getComputedStyle(m)['height'];
+      el.style.height = w.getComputedStyle(m).height;
     };
 
     /**
