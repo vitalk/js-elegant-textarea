@@ -1,0 +1,70 @@
+/**
+ * Demo purposes only
+ */
+@line-height: 1.4em;
+
+.container {
+    width: 600px;
+    margin: 3em auto;
+
+    p,
+    h1 { text-align: center; }
+    h1 {
+        font-size: 24px;
+        font-weight: normal;
+    }
+}
+.shadow(@c, @r, @c2: none) {
+    border: solid 1px @c;
+    .border-radius(@r);
+    .box-shadow(0 @r/2 0 @c2);
+}
+form {
+    width: 400px;
+    margin: 2em auto;
+}
+textarea {
+    @c: #ccc;
+    @r: 5px;
+    .shadow(@c, @r, lighten(@c, 7));
+
+    font-size: 14px;
+    padding: @line-height/2;
+
+    outline: none;
+    resize: none;
+
+}
+button {
+    @c: #87b8dd;
+    @r: 5px;
+
+    background: @c;
+    color: #fff;
+    font: bold 13px Arial, Tahoma, sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0 1px rgba(0,0,0,.1);
+
+    display: inline-block;
+    margin-top: @line-height;
+    padding: .4em .8em;
+
+    .shadow(@c, @r, darken(@c, 13));
+}
+
+
+/**
+ * Mixins
+ */
+.border-radius(@radius) {
+    -webkit-border-radius: @radius;
+       -moz-border-radius: @radius;
+         -o-border-radius: @radius;
+            border-radius: @radius;
+}
+.box-shadow(@shadow) {
+    -webkit-box-shadow: @shadow;
+       -moz-box-shadow: @shadow;
+         -o-box-shadow: @shadow;
+            box-shadow: @shadow;
+}

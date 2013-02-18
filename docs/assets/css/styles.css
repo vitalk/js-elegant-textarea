@@ -1,0 +1,56 @@
+/**
+ * Demo purposes only
+ */
+.container {
+  width: 600px;
+  margin: 3em auto;
+}
+.container p,
+.container h1 {
+  text-align: center;
+}
+.container h1 {
+  font-size: 24px;
+  font-weight: normal;
+}
+form {
+  width: 400px;
+  margin: 2em auto;
+}
+textarea {
+  border: solid 1px #cccccc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2.5px 0 #dedede;
+  -moz-box-shadow: 0 2.5px 0 #dedede;
+  -o-box-shadow: 0 2.5px 0 #dedede;
+  box-shadow: 0 2.5px 0 #dedede;
+  font-size: 14px;
+  padding: 0.7em;
+  outline: none;
+  resize: none;
+}
+button {
+  background: #87b8dd;
+  color: #fff;
+  font: bold 13px Arial, Tahoma, sans-serif;
+  text-transform: uppercase;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  margin-top: 1.4em;
+  padding: .4em .8em;
+  border: solid 1px #87b8dd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2.5px 0 #5399ce;
+  -moz-box-shadow: 0 2.5px 0 #5399ce;
+  -o-box-shadow: 0 2.5px 0 #5399ce;
+  box-shadow: 0 2.5px 0 #5399ce;
+}
+/**
+ * Mixins
+ */
