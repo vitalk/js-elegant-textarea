@@ -255,11 +255,8 @@
 
   }());
 
-  Elegant.prototype.ready(function() {
-    var els = w.document.querySelectorAll('.js-elegant-textarea'),
-        l = els.length;
-
-    while (l--) new Elegant(els[l]);
+  new Elegant(function() {
+    return new Elegant('.js-elegant-textarea');
   });
 
 }(this));
