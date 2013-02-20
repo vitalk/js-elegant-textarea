@@ -17,7 +17,8 @@
    */
   var Elegant = (function namespace() {
 
-    var doc = w.document;
+    var doc = w.document,
+        root = doc.documentElement;
 
     /**
      * Register the specified handler function to handle events of the specified
@@ -90,20 +91,44 @@
       });
     };
 
-    function Elegant(el) {
+    function Elegant(el, opts) {
+      this.opts = opts || {};
+      this.setSelectorEngine(this.opts.sel);
+
       if (el) {
-        this.el = el;
 
-        var self = this,
-            resize = function() { self.resize.call(self, el) };
+        if (typeof el === 'string') {
+          for(var i = 0, els = this.sel(el, root), l = els.length; i < l; i++) {
+            new Elegant(els[i])
+          }
 
-        apply(el, {
-          'resize': 'none',
-          'overflow-y': 'hidden'
-        });
+        } else {
+          this.el = el;
 
-        attachEvent(el, 'input', resize);
-        attachEvent(el, 'propertychange', resize);
+          var self = this,
+              resize = function() { self.resize.call(self, el) };
+
+          apply(el, {
+            'resize': 'none',
+            'overflow-y': 'hidden'
+          });
+
+          attachEvent(el, 'input', resize);
+          attachEvent(el, 'propertychange', resize);
+        }
+      }
+    };
+
+    Elegant.prototype.setSelectorEngine = function(e) {
+      if (e) this.sel = e;
+      else {
+        this.sel = doc.querySelectorAll
+        ? function(s, r) {
+          return r.querySelectorAll(s)
+        }
+        : function() {
+          throw new Error('Elegant: no selector engine found')
+        }
       }
     };
 
