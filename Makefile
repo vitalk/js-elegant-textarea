@@ -28,7 +28,7 @@ docs: js
 # BUILD
 #
 build:
-	@git checkout build
+	@git checkout -b build
 	@make clean
 	@make js
 	@mkdir -p docs/assets/js
@@ -38,6 +38,7 @@ build:
 	@git commit -m "update build"
 	@git checkout master
 	@git merge build
+	@git branch -d build
 
 
 js: $(JSOBJS_COMPRESSED)
