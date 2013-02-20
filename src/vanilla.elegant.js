@@ -260,8 +260,6 @@
 
   }());
 
-  new Elegant(function() {
-    return new Elegant('.js-elegant-textarea');
-  });
+  return new Elegant('.js-elegant-textarea');
 
 }(this));
