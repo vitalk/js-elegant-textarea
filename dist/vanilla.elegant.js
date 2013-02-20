@@ -77,7 +77,7 @@
      */
     function apply(el, props) {
       for (var prop in props) {
-        el.style[toCamelCase(prop)] = props[prop];
+        el.style[camelize(prop)] = props[prop];
       }
     };
 
@@ -88,7 +88,7 @@
      * @param {String} s The input string
      * @return {String} The camelCase string
      */
-    function toCamelCase(s) {
+    function camelize(s) {
       return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
         return l.toUpperCase();
       });
@@ -99,11 +99,14 @@
       this.setSelectorEngine(this.opts.sel);
 
       if (el) {
+        var self = this;
 
         if (typeof el === 'string') {
-          for(var i = 0, els = this.sel(el, root), l = els.length; i < l; i++) {
-            new Elegant(els[i])
-          }
+          this.ready(function() {
+            for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
+              new Elegant(els[i])
+            }
+          })
 
         } else if (typeof el === 'function') {
           return this.ready(el)
@@ -111,8 +114,7 @@
         } else {
           this.el = el;
 
-          var self = this,
-              resize = function() { self.resize.call(self, el) };
+          var resize = function() { self.resize.call(self, el) };
 
           apply(el, {
             'resize': 'none',
@@ -196,7 +198,7 @@
 
       for(var prop, props = {}, i = 0, l = propNames.length; i < l; i++) {
         prop = propNames[i];
-        props[prop] = original[toCamelCase(prop)];
+        props[prop] = original[camelize(prop)];
       }
 
       apply(rv, this.extend(props, mirror));
@@ -258,8 +260,6 @@
 
   }());
 
-  new Elegant(function() {
-    return new Elegant('.js-elegant-textarea');
-  });
+  return new Elegant('.js-elegant-textarea');
 
 }(this));
