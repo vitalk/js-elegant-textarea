@@ -14,10 +14,14 @@
    * e.g. it expands to fit its content.
    *
    * @param {String} el The textarea selector
+   * @param {Element} el The textarea node
+   * @param {Function} el Invoke passed function when the document is ready
+   * @param {Object} opts The options, sel - the selector engine
    */
   var Elegant = (function namespace() {
 
-    var doc = w.document;
+    var doc = w.document,
+        root = doc.documentElement;
 
     /**
      * Register the specified handler function to handle events of the specified
@@ -90,20 +94,47 @@
       });
     };
 
-    function Elegant(el) {
+    function Elegant(el, opts) {
+      this.opts = opts || {};
+      this.setSelectorEngine(this.opts.sel);
+
       if (el) {
-        this.el = el;
 
-        var self = this,
-            resize = function() { self.resize.call(self, el) };
+        if (typeof el === 'string') {
+          for(var i = 0, els = this.sel(el, root), l = els.length; i < l; i++) {
+            new Elegant(els[i])
+          }
 
-        apply(el, {
-          'resize': 'none',
-          'overflow-y': 'hidden'
-        });
+        } else if (typeof el === 'function') {
+          return this.ready(el)
 
-        attachEvent(el, 'input', resize);
-        attachEvent(el, 'propertychange', resize);
+        } else {
+          this.el = el;
+
+          var self = this,
+              resize = function() { self.resize.call(self, el) };
+
+          apply(el, {
+            'resize': 'none',
+            'overflow-y': 'hidden'
+          });
+
+          attachEvent(el, 'input', resize);
+          attachEvent(el, 'propertychange', resize);
+        }
+      }
+    };
+
+    Elegant.prototype.setSelectorEngine = function(e) {
+      if (e) this.sel = e;
+      else {
+        this.sel = doc.querySelectorAll
+        ? function(s, r) {
+          return r.querySelectorAll(s)
+        }
+        : function() {
+          throw new Error('Elegant: no selector engine found')
+        }
       }
     };
 
@@ -227,11 +258,8 @@
 
   }());
 
-  Elegant.prototype.ready(function() {
-    var els = w.document.querySelectorAll('.js-elegant-textarea'),
-        l = els.length;
-
-    while (l--) new Elegant(els[l]);
+  new Elegant(function() {
+    return new Elegant('.js-elegant-textarea');
   });
 
 }(this));
