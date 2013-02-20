@@ -99,11 +99,14 @@
       this.setSelectorEngine(this.opts.sel);
 
       if (el) {
+        var self = this;
 
         if (typeof el === 'string') {
-          for(var i = 0, els = this.sel(el, root), l = els.length; i < l; i++) {
-            new Elegant(els[i])
-          }
+          this.ready(function() {
+            for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
+              new Elegant(els[i])
+            }
+          })
 
         } else if (typeof el === 'function') {
           return this.ready(el)
@@ -111,8 +114,7 @@
         } else {
           this.el = el;
 
-          var self = this,
-              resize = function() { self.resize.call(self, el) };
+          var resize = function() { self.resize.call(self, el) };
 
           apply(el, {
             'resize': 'none',
