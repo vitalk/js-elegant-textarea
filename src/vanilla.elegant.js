@@ -102,6 +102,9 @@
             new Elegant(els[i])
           }
 
+        } else if (typeof el === 'function') {
+          return this.ready(el)
+
         } else {
           this.el = el;
 
