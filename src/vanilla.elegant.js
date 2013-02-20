@@ -77,7 +77,7 @@
      */
     function apply(el, props) {
       for (var prop in props) {
-        el.style[toCamelCase(prop)] = props[prop];
+        el.style[camelize(prop)] = props[prop];
       }
     };
 
@@ -88,7 +88,7 @@
      * @param {String} s The input string
      * @return {String} The camelCase string
      */
-    function toCamelCase(s) {
+    function camelize(s) {
       return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
         return l.toUpperCase();
       });
@@ -196,7 +196,7 @@
 
       for(var prop, props = {}, i = 0, l = propNames.length; i < l; i++) {
         prop = propNames[i];
-        props[prop] = original[toCamelCase(prop)];
+        props[prop] = original[camelize(prop)];
       }
 
       apply(rv, this.extend(props, mirror));
