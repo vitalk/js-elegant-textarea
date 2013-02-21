@@ -296,6 +296,6 @@
 
   }());
 
-  return new Elegant('.js-elegant-textarea');
+  return new Elegant('.js-elegant-textarea', {minHeight: 'original'});
 
 }(this));
