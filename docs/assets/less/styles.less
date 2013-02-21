@@ -7,6 +7,26 @@
 @ribbon: rgba(114,11,11,1);
 @ribbon-light: lighten(@ribbon, 17);
 
+
+/**
+ * Responsive layout
+ */
+.container {
+    @media screen {
+        margin: 3em auto;
+
+        @media (max-width: 32em) { // 480px
+            width: 90%;
+        }
+        @media (max-width: 51.2em) { // 768px
+            width: 80%;
+        }
+        @media (min-width: 51.2em) {
+            width: 40em; // 600px
+        }
+    }
+}
+
 html {
     font: normal 100% Arial, Tahoma, sans-serif;
 }
@@ -36,10 +56,6 @@ a {
     &:hover {
         text-decoration: underline;
     }
-}
-.container {
-    width: 600px;
-    margin: 3em auto;
 }
 .demo {
     h1 { text-align: center; }

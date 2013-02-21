@@ -1,6 +1,29 @@
 /**
  * Demo purposes only
  */
+/**
+ * Responsive layout
+ */
+@media screen {
+  .container {
+    margin: 3em auto;
+  }
+}
+@media screen and (max-width: 32em) {
+  .container {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 51.2em) {
+  .container {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 51.2em) {
+  .container {
+    width: 40em;
+  }
+}
 html {
   font: normal 100% Arial, Tahoma, sans-serif;
 }
@@ -41,10 +64,6 @@ a {
 }
 a:hover {
   text-decoration: underline;
-}
-.container {
-  width: 600px;
-  margin: 3em auto;
 }
 .demo h1 {
   text-align: center;
