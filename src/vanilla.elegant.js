@@ -24,6 +24,15 @@
         root = doc.documentElement;
 
     /**
+     * Remove the unit of a dimension
+     *
+     * @param {String} d A number, with or without dimension
+     */
+    function unitless(d) {
+      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
+    };
+
+    /**
      * Register the specified handler function to handle events of the specified
      * type on the specified target
      *
