@@ -143,6 +143,13 @@
       return w.getComputedStyle(el).height
     };
 
+    /**
+     * Shortcut to Elegant object creation
+     */
+    function elegant(el, opts) {
+      return new Elegant(el, opts)
+    };
+
     function Elegant(el, opts) {
       this.opts = opts || {};
       this.sel = getSelectorEngine(this.opts.sel);
@@ -153,7 +160,7 @@
         if (typeof el === 'string') {
           this.ready(function() {
             for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
-              new Elegant(els[i], opts)
+              elegant(els[i], opts)
             }
           })
 
@@ -298,7 +305,7 @@
           return ready ? fn.call(doc): funcs.push(fn);
     };
 
-    return Elegant;
+    return elegant;
 
   }());
 
