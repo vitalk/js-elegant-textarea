@@ -24,126 +24,6 @@
         root = doc.documentElement;
 
     /**
-     * Returns max from two units. On comparison uses unitless value.
-     *
-     * @param {String} x The 1st unit
-     * @param {String} y The 2nd unit
-     * @return {String} Max from two units
-     */
-    function max(x, y) {
-      return (unitless(x) > unitless(y)) ? x : y
-    }
-
-    /**
-     * Remove the unit of a dimension
-     *
-     * @param {String} d A number, with or without dimension
-     */
-    function unitless(d) {
-      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
-    };
-
-    /**
-     * Register the specified handler function to handle events of the specified
-     * type on the specified target
-     *
-     * @param {Element} target The event target
-     * @param {String} type The event type
-     * @param {Function} handler The event handler
-     */
-    function attachEvent(target, type, handler) {
-      if (target.addEventListener) {
-        target.addEventListener(type, handler, false);
-      } else if (target.attachEvent) {
-        target.attachEvent('on' + type, function(e) {
-          return handler.call(target, e);
-        });
-      }
-    };
-
-    /**
-     * Returns the selector engine
-     *
-     * @param {Function} e The selector engine or nothing
-     * @return {Function} The selector engine
-     */
-    function getSelectorEngine(e) {
-      if (e) return e;
-      else {
-        return doc.querySelectorAll
-        ? function(s, r) {
-          return r.querySelectorAll(s)
-        }
-        : function() {
-          throw new Error('Elegant: no selector engine found')
-        }
-      }
-    };
-
-    /**
-     * Returns the existing mirror of the element or create new one.
-     *
-     * @param {Element} el The original element
-     * @return {Element} The mirror element
-     */
-    function getMirror(el) {
-      var k, l, m = el.nextSibling;
-
-      if (m && m.className == 'js-elegant-mirror') {
-        m.innerHTML = '';
-      } else {
-        m = Elegant.prototype.clone(el);
-        m.className = 'js-elegant-mirror';
-        el.parentNode.insertBefore(m, el.nextSibling);
-      }
-
-      if (k = el.value) l = doc.createTextNode(k);
-
-      k = doc.createElement('span')
-      k.innerHTML = '&nbsp;'
-
-      if (l) m.appendChild(l);
-      m.appendChild(k);
-
-      return m;
-    };
-
-    /**
-     * Apply styles to element
-     *
-     * @param {Element} el The document element that will be styled
-     * @param {Object} props The object with css property value pairs
-     */
-    function apply(el, props) {
-      for (var prop in props) {
-        el.style[camelize(prop)] = props[prop];
-      }
-    };
-
-    /**
-     * Convert string with hyphens to camelCase (useful for convert css style
-     * property to valid object property).
-     *
-     * @param {String} s The input string
-     * @return {String} The camelCase string
-     */
-    function camelize(s) {
-      return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
-        return l.toUpperCase();
-      });
-    };
-
-    /**
-     * Returns the computed element height
-     *
-     * @param {Element} el The DOM element
-     * @return {String} The computed height of the element
-     */
-    function getHeight(el) {
-      return w.getComputedStyle(el).height
-    };
-
-    /**
      * Shortcut to Elegant object creation
      */
     function elegant(el, opts) {
@@ -303,6 +183,126 @@
           }
 
           return ready ? fn.call(doc): funcs.push(fn);
+    };
+
+    /**
+     * Returns max from two units. On comparison uses unitless value.
+     *
+     * @param {String} x The 1st unit
+     * @param {String} y The 2nd unit
+     * @return {String} Max from two units
+     */
+    function max(x, y) {
+      return (unitless(x) > unitless(y)) ? x : y
+    }
+
+    /**
+     * Remove the unit of a dimension
+     *
+     * @param {String} d A number, with or without dimension
+     */
+    function unitless(d) {
+      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
+    };
+
+    /**
+     * Register the specified handler function to handle events of the specified
+     * type on the specified target
+     *
+     * @param {Element} target The event target
+     * @param {String} type The event type
+     * @param {Function} handler The event handler
+     */
+    function attachEvent(target, type, handler) {
+      if (target.addEventListener) {
+        target.addEventListener(type, handler, false);
+      } else if (target.attachEvent) {
+        target.attachEvent('on' + type, function(e) {
+          return handler.call(target, e);
+        });
+      }
+    };
+
+    /**
+     * Returns the selector engine
+     *
+     * @param {Function} e The selector engine or nothing
+     * @return {Function} The selector engine
+     */
+    function getSelectorEngine(e) {
+      if (e) return e;
+      else {
+        return doc.querySelectorAll
+        ? function(s, r) {
+          return r.querySelectorAll(s)
+        }
+        : function() {
+          throw new Error('Elegant: no selector engine found')
+        }
+      }
+    };
+
+    /**
+     * Returns the existing mirror of the element or create new one.
+     *
+     * @param {Element} el The original element
+     * @return {Element} The mirror element
+     */
+    function getMirror(el) {
+      var k, l, m = el.nextSibling;
+
+      if (m && m.className == 'js-elegant-mirror') {
+        m.innerHTML = '';
+      } else {
+        m = Elegant.prototype.clone(el);
+        m.className = 'js-elegant-mirror';
+        el.parentNode.insertBefore(m, el.nextSibling);
+      }
+
+      if (k = el.value) l = doc.createTextNode(k);
+
+      k = doc.createElement('span')
+      k.innerHTML = '&nbsp;'
+
+      if (l) m.appendChild(l);
+      m.appendChild(k);
+
+      return m;
+    };
+
+    /**
+     * Apply styles to element
+     *
+     * @param {Element} el The document element that will be styled
+     * @param {Object} props The object with css property value pairs
+     */
+    function apply(el, props) {
+      for (var prop in props) {
+        el.style[camelize(prop)] = props[prop];
+      }
+    };
+
+    /**
+     * Convert string with hyphens to camelCase (useful for convert css style
+     * property to valid object property).
+     *
+     * @param {String} s The input string
+     * @return {String} The camelCase string
+     */
+    function camelize(s) {
+      return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
+        return l.toUpperCase();
+      });
+    };
+
+    /**
+     * Returns the computed element height
+     *
+     * @param {Element} el The DOM element
+     * @return {String} The computed height of the element
+     */
+    function getHeight(el) {
+      return w.getComputedStyle(el).height
     };
 
     return elegant;
