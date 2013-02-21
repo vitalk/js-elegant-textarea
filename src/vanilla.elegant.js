@@ -24,6 +24,17 @@
         root = doc.documentElement;
 
     /**
+     * Returns max from two units. On comparison uses unitless value.
+     *
+     * @param {String} x The 1st unit
+     * @param {String} y The 2nd unit
+     * @return {String} Max from two units
+     */
+    function max(x, y) {
+      return (unitless(x) > unitless(y)) ? x : y
+    }
+
+    /**
      * Remove the unit of a dimension
      *
      * @param {String} d A number, with or without dimension
