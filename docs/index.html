@@ -9,20 +9,42 @@
     </head>
     <body>
         <div class="container">
-            <h1>Look at this elegant textarea. Nothing special? <small>Yep.</small></h1>
-            <p>All magic starts when your type something on it — this textarea
-            expands to fit its content. <strong>Try it now!</strong></p>
-            <form action="" method="" accept-charset="utf-8">
-                <textarea rows="2" cols="40" class="js-elegant-textarea"
-                    placeholder="Type your poem, line by line..."></textarea>
-                <button type="reset">Clear</button>
-            </form>
+            <section class="demo">
+                <hgroup>
+                    <h1>Look at this <strong>elegant</strong> textarea. Nothing special? <small>Yep.</small></h1>
+                    <h2>All magic starts when your type something on it — this textarea
+                        expands to fit its content. <strong>Try to type</strong>
+                        something nice!</h2>
+                </hgroup>
+                <form action="" method="" accept-charset="utf-8">
+                    <textarea rows="2" cols="40" class="js-elegant-textarea"
+                        placeholder="Type your poem, line by line..."></textarea>
+                    <button type="reset">Remove draft</button>
+                </form>
+            </section>
+            <section class="features">
+                <h1>Features</h1>
+                <ul>
+                    <li>works on Chrome, FF, Opera and IE(?)</li>
+                    <li>vanilla javascript, 3.4<small>k</small> minified</li>
+                    <li>no dependencies</li>
+                    <li>no extra markup</li>
+                    <li>easy customization</li>
+                </ul>
+            </section>
+            <section class="copy">
+                <h1>Copyright</h1>
+                <p>Created by <a href="//github.com/vitalk">Vital Kudzelka</a>. Licensed under the <a href="//opensource.org/licenses/MIT">MIT license</a>.</p>
+                <p>For more details and documentation follow to <a
+                    href="//github.com/vitalk/js-elegant-textarea">Github
+                    repository</a>.</p>
+            </section>
         </div>
         <script src="/assets/js/vanilla.elegant.js" type="text/javascript"></script>
         <script type="text/javascript" charset="utf-8">
 
             Elegant('.js-elegant-textarea', {minHeight: 'original'});
 
-        </script>
-    </body>
-</html>
+            </script>
+        </body>
+    </html>
