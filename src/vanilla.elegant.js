@@ -309,6 +309,7 @@
 
   }());
 
-  return new Elegant('.js-elegant-textarea', {minHeight: 'original'});
+  // expose to the global object
+  w.Elegant = Elegant;
 
 }(this));
