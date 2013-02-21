@@ -28,6 +28,7 @@ textarea {
   -o-box-shadow: 0 2.5px 0 #dedede;
   box-shadow: 0 2.5px 0 #dedede;
   font-size: 14px;
+  margin: 0;
   padding: 0.7em;
   outline: none;
   resize: none;
