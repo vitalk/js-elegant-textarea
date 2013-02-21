@@ -62,6 +62,25 @@
     };
 
     /**
+     * Returns the selector engine
+     *
+     * @param {Function} e The selector engine or nothing
+     * @return {Function} The selector engine
+     */
+    function getSelectorEngine(e) {
+      if (e) return e;
+      else {
+        return doc.querySelectorAll
+        ? function(s, r) {
+          return r.querySelectorAll(s)
+        }
+        : function() {
+          throw new Error('Elegant: no selector engine found')
+        }
+      }
+    };
+
+    /**
      * Returns the existing mirror of the element or create new one.
      *
      * @param {Element} el The original element
@@ -124,9 +143,16 @@
       return w.getComputedStyle(el).height
     };
 
+    /**
+     * Shortcut to Elegant object creation
+     */
+    function elegant(el, opts) {
+      return new Elegant(el, opts)
+    };
+
     function Elegant(el, opts) {
       this.opts = opts || {};
-      this.setSelectorEngine(this.opts.sel);
+      this.sel = getSelectorEngine(this.opts.sel);
 
       if (el) {
         var self = this;
@@ -134,7 +160,7 @@
         if (typeof el === 'string') {
           this.ready(function() {
             for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
-              new Elegant(els[i], opts)
+              elegant(els[i], opts)
             }
           })
 
@@ -159,19 +185,6 @@
 
           attachEvent(el, 'input', resize);
           attachEvent(el, 'propertychange', resize);
-        }
-      }
-    };
-
-    Elegant.prototype.setSelectorEngine = function(e) {
-      if (e) this.sel = e;
-      else {
-        this.sel = doc.querySelectorAll
-        ? function(s, r) {
-          return r.querySelectorAll(s)
-        }
-        : function() {
-          throw new Error('Elegant: no selector engine found')
         }
       }
     };
@@ -292,10 +305,11 @@
           return ready ? fn.call(doc): funcs.push(fn);
     };
 
-    return Elegant;
+    return elegant;
 
   }());
 
-  return new Elegant('.js-elegant-textarea', {minHeight: 'original'});
+  // expose to the global object
+  w.Elegant = Elegant;
 
 }(this));
