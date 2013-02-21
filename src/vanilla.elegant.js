@@ -62,6 +62,25 @@
     };
 
     /**
+     * Returns the selector engine
+     *
+     * @param {Function} e The selector engine or nothing
+     * @return {Function} The selector engine
+     */
+    function getSelectorEngine(e) {
+      if (e) return e;
+      else {
+        return doc.querySelectorAll
+        ? function(s, r) {
+          return r.querySelectorAll(s)
+        }
+        : function() {
+          throw new Error('Elegant: no selector engine found')
+        }
+      }
+    };
+
+    /**
      * Returns the existing mirror of the element or create new one.
      *
      * @param {Element} el The original element
@@ -126,7 +145,7 @@
 
     function Elegant(el, opts) {
       this.opts = opts || {};
-      this.setSelectorEngine(this.opts.sel);
+      this.sel = getSelectorEngine(this.opts.sel);
 
       if (el) {
         var self = this;
@@ -159,19 +178,6 @@
 
           attachEvent(el, 'input', resize);
           attachEvent(el, 'propertychange', resize);
-        }
-      }
-    };
-
-    Elegant.prototype.setSelectorEngine = function(e) {
-      if (e) this.sel = e;
-      else {
-        this.sel = doc.querySelectorAll
-        ? function(s, r) {
-          return r.querySelectorAll(s)
-        }
-        : function() {
-          throw new Error('Elegant: no selector engine found')
         }
       }
     };
