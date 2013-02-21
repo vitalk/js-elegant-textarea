@@ -24,6 +24,26 @@
         root = doc.documentElement;
 
     /**
+     * Returns max from two units. On comparison uses unitless value.
+     *
+     * @param {String} x The 1st unit
+     * @param {String} y The 2nd unit
+     * @return {String} Max from two units
+     */
+    function max(x, y) {
+      return (unitless(x) > unitless(y)) ? x : y
+    }
+
+    /**
+     * Remove the unit of a dimension
+     *
+     * @param {String} d A number, with or without dimension
+     */
+    function unitless(d) {
+      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
+    };
+
+    /**
      * Register the specified handler function to handle events of the specified
      * type on the specified target
      *
@@ -94,6 +114,16 @@
       });
     };
 
+    /**
+     * Returns the computed element height
+     *
+     * @param {Element} el The DOM element
+     * @return {String} The computed height of the element
+     */
+    function getHeight(el) {
+      return w.getComputedStyle(el).height
+    };
+
     function Elegant(el, opts) {
       this.opts = opts || {};
       this.setSelectorEngine(this.opts.sel);
@@ -104,7 +134,7 @@
         if (typeof el === 'string') {
           this.ready(function() {
             for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
-              new Elegant(els[i])
+              new Elegant(els[i], opts)
             }
           })
 
@@ -113,6 +143,12 @@
 
         } else {
           this.el = el;
+
+          if (this.opts.minHeight) {
+            this.minHeight = (this.opts.minHeight == 'original') ? getHeight(el) : this.opts.minHeight
+          } else {
+            this.minHeight = 0
+          }
 
           var resize = function() { self.resize.call(self, el) };
 
@@ -150,7 +186,7 @@
       if (!(m = getMirror(el))) return;
 
       el.style.height = '';
-      el.style.height = w.getComputedStyle(m).height;
+      el.style.height = max(getHeight(m), this.minHeight)
     };
 
     /**
@@ -260,6 +296,6 @@
 
   }());
 
-  return new Elegant('.js-elegant-textarea');
+  return new Elegant('.js-elegant-textarea', {minHeight: 'original'});
 
 }(this));
