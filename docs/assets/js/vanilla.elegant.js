@@ -95,6 +95,8 @@
         "border-left-width",
         "border-right-width",
         "border-top-width",
+        "border-width",
+        "border-style",
         "box-sizing",
         "font-family",
         "font-size",
