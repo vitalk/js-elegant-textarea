@@ -114,6 +114,16 @@
       });
     };
 
+    /**
+     * Returns the computed element height
+     *
+     * @param {Element} el The DOM element
+     * @return {String} The computed height of the element
+     */
+    function getHeight(el) {
+      return w.getComputedStyle(el).height
+    };
+
     function Elegant(el, opts) {
       this.opts = opts || {};
       this.setSelectorEngine(this.opts.sel);
@@ -133,6 +143,12 @@
 
         } else {
           this.el = el;
+
+          if (this.opts.minHeight) {
+            this.minHeight = (this.opts.minHeight == 'original') ? getHeight(el) : this.opts.minHeight
+          } else {
+            this.minHeight = 0
+          }
 
           var resize = function() { self.resize.call(self, el) };
 
@@ -170,7 +186,7 @@
       if (!(m = getMirror(el))) return;
 
       el.style.height = '';
-      el.style.height = w.getComputedStyle(m).height;
+      el.style.height = max(getHeight(m), this.minHeight)
     };
 
     /**
