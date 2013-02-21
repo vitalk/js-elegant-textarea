@@ -124,7 +124,7 @@
         if (typeof el === 'string') {
           this.ready(function() {
             for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
-              new Elegant(els[i])
+              new Elegant(els[i], opts)
             }
           })
 
