@@ -5,49 +5,32 @@ DONE = ✓
 BUILD = $(shell pwd)/dist
 JS = vanilla.elegant.js
 JSOBJS = $(foreach js, $(JS), $(BUILD)/$(js))
-JSOBJS_COMPRESSED = $(foreach js, $(JSOBJS), $(JSOBJS:.js=.min.js))
 JSCOMPRESS = cat
+JSOBJS_COMPRESSED = $(JSOBJS:.js=.min.js)
+SRC = src/vanilla.elegant.js
 
 
-all: clean js
+all: clean $(JSOBJS_COMPRESSED) docs
 
-.PHONY: docs js clean
+.PHONY: docs clean
 
 
 #
 # DOCS SERVER
 #
-docs: js
+docs: $(JSOBJS)
 	@mkdir -p docs/assets/js
-	@cp $(BUILD)/vanilla.elegant.js -t docs/assets/js
-	@xdg-open http://localhost:5007/ 2>/dev/null
+	@cp $< -t docs/assets/js
 	@cd docs && python -m SimpleHTTPServer 5007
 
 
 #
 # BUILD
 #
-build:
-	@git checkout -b build
-	@make clean
-	@make js
-	@mkdir -p docs/assets/js
-	@cp $(BUILD)/vanilla.elegant.js -t docs/assets/js
-	@git add -f dist
-	@git add docs/assets/js
-	@git commit -m "update build"
-	@git checkout master
-	@git merge build
-	@git branch -d build
-
-
-js: $(JSOBJS_COMPRESSED)
-
-
-$(JSOBJS):
+$(JSOBJS): $(SRC)
 	@mkdir -p $(BUILD)
 	@echo -n "Compiling and minifying js..."
-	@cat src/vanilla.elegant.js >> $@
+	@cat $< >> $@
 
 
 $(JSOBJS_COMPRESSED): $(JSOBJS)
@@ -56,5 +39,8 @@ $(JSOBJS_COMPRESSED): $(JSOBJS)
 	@echo "                                $(DONE)"
 
 
+#
+# CLEANUP
+#
 clean:
 	@rm -rf dist
