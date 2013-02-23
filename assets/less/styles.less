@@ -1,0 +1,149 @@
+/**
+ * Demo purposes only
+ */
+@line-height: 1.4em;
+@half: @line-height/2;
+@color: #111;
+@ribbon: rgba(114,11,11,1);
+@ribbon-light: lighten(@ribbon, 17);
+
+
+/**
+ * Responsive layout
+ */
+.container {
+    @media screen {
+        margin: 3em auto;
+
+        @media (max-width: 32em) { // 480px
+            width: 90%;
+        }
+        @media (min-width: 32em) and (max-width: 51.2em) { // 768px
+            width: 80%;
+        }
+        @media (min-width: 51.2em) {
+            width: 40em; // 600px
+        }
+    }
+}
+
+html {
+    font: normal 100% Arial, Tahoma, sans-serif;
+}
+body {
+    color: @color;
+    font-size: 0.9375em; // 15px
+}
+h1,
+h2 {
+    font-weight: normal;
+    text-rendering: optimizelegibility;
+    .paragraph(@half);
+
+    &+p { margin-top: @half; }
+    &+ul { margin-top: @half; }
+}
+h1 {
+    font-size: 1.6em; // 24px
+}
+h2 {
+    font-size: 1.333333em; // 20px
+}
+a {
+    color: @ribbon-light;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+small { font-size: .8em; }
+strong { font-weight: bold; }
+.demo {
+    h1 { text-align: center; }
+}
+.copy h1+p {
+    font-size: 1.333333em; // 20px
+}
+section { .paragraph(@line-height); }
+p { .paragraph; }
+ul {
+    padding: 0;
+    margin: 0 0 @half @line-height;
+    list-style: disc;
+}
+li {
+    .paragraph(@half/2);
+}
+form {
+    width: 400px;
+    margin: 2em auto;
+}
+textarea {
+    @c: #ccc;
+    @r: 5px;
+    .shadow(@c, @r, lighten(@c, 7));
+
+    font-size: 14px;
+    margin: 0;
+    padding: @line-height/2;
+
+    outline: none;
+}
+button {
+    @c: @ribbon-light;
+    @r: 5px;
+
+    background: @c;
+    color: darken(white, 3);
+    font: bold 11px Arial, Tahoma, sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0 1px rgba(0,0,0,.7);
+
+    display: inline-block;
+    margin-top: @line-height;
+    padding: .7em 1em;
+    position: relative;
+
+    border: 1px solid @c;
+    .shadow(@c, @r, darken(@c, 13));
+
+    &:hover {
+    .border-radius(@r);
+        background: darken(@ribbon-light, 3);
+    }
+    &:active {
+        top: 2px;
+        color: darken(white, 9);
+        .shadow(@c, @r/2, darken(@c, 3));
+        .border-radius(@r);
+    }
+}
+
+
+/**
+ * Mixins
+ */
+
+.paragraph(@m: @line-height/2) {
+    margin: 0;
+    padding: 0;
+    &+& { margin-top: @m; }
+}
+.shadow(@c, @r, @c2: none) {
+    border: solid 1px @c;
+    .border-radius(@r);
+    .box-shadow(0 @r/2 0 @c2);
+}
+.border-radius(@radius) {
+    -webkit-border-radius: @radius;
+       -moz-border-radius: @radius;
+         -o-border-radius: @radius;
+            border-radius: @radius;
+}
+.box-shadow(@shadow) {
+    -webkit-box-shadow: @shadow;
+       -moz-box-shadow: @shadow;
+         -o-box-shadow: @shadow;
+            box-shadow: @shadow;
+}

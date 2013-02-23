@@ -1,0 +1,172 @@
+/**
+ * Demo purposes only
+ */
+/**
+ * Responsive layout
+ */
+@media screen {
+  .container {
+    margin: 3em auto;
+  }
+}
+@media screen and (max-width: 32em) {
+  .container {
+    width: 90%;
+  }
+}
+@media screen and (min-width: 32em) and (max-width: 51.2em) {
+  .container {
+    width: 80%;
+  }
+}
+@media screen and (min-width: 51.2em) {
+  .container {
+    width: 40em;
+  }
+}
+html {
+  font: normal 100% Arial, Tahoma, sans-serif;
+}
+body {
+  color: #111111;
+  font-size: 0.9375em;
+}
+h1,
+h2 {
+  font-weight: normal;
+  text-rendering: optimizelegibility;
+  margin: 0;
+  padding: 0;
+}
+h1 + h1,
+h1 + h2,
+h2 + h1,
+h2 + h2 {
+  margin-top: 0.7em;
+}
+h1 + p,
+h2 + p {
+  margin-top: 0.7em;
+}
+h1 + ul,
+h2 + ul {
+  margin-top: 0.7em;
+}
+h1 {
+  font-size: 1.6em;
+}
+h2 {
+  font-size: 1.333333em;
+}
+a {
+  color: #c11313;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+small {
+  font-size: .8em;
+}
+strong {
+  font-weight: bold;
+}
+.demo h1 {
+  text-align: center;
+}
+.copy h1 + p {
+  font-size: 1.333333em;
+}
+section {
+  margin: 0;
+  padding: 0;
+}
+section + section {
+  margin-top: 1.4em;
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+p + p {
+  margin-top: 0.7em;
+}
+ul {
+  padding: 0;
+  margin: 0 0 0.7em 1.4em;
+  list-style: disc;
+}
+li {
+  margin: 0;
+  padding: 0;
+}
+li + li {
+  margin-top: 0.35em;
+}
+form {
+  width: 400px;
+  margin: 2em auto;
+}
+textarea {
+  border: solid 1px #cccccc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2.5px 0 #dedede;
+  -moz-box-shadow: 0 2.5px 0 #dedede;
+  -o-box-shadow: 0 2.5px 0 #dedede;
+  box-shadow: 0 2.5px 0 #dedede;
+  font-size: 14px;
+  margin: 0;
+  padding: 0.7em;
+  outline: none;
+}
+button {
+  background: #c11313;
+  color: #f7f7f7;
+  font: bold 11px Arial, Tahoma, sans-serif;
+  text-transform: uppercase;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.7);
+  display: inline-block;
+  margin-top: 1.4em;
+  padding: .7em 1em;
+  position: relative;
+  border: 1px solid #c11313;
+  border: solid 1px #c11313;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2.5px 0 #850d0d;
+  -moz-box-shadow: 0 2.5px 0 #850d0d;
+  -o-box-shadow: 0 2.5px 0 #850d0d;
+  box-shadow: 0 2.5px 0 #850d0d;
+}
+button:hover {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background: #b31111;
+}
+button:active {
+  top: 2px;
+  color: #e8e8e8;
+  border: solid 1px #c11313;
+  -webkit-border-radius: 2.5px;
+  -moz-border-radius: 2.5px;
+  -o-border-radius: 2.5px;
+  border-radius: 2.5px;
+  -webkit-box-shadow: 0 1.25px 0 #b31111;
+  -moz-box-shadow: 0 1.25px 0 #b31111;
+  -o-box-shadow: 0 1.25px 0 #b31111;
+  box-shadow: 0 1.25px 0 #b31111;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+/**
+ * Mixins
+ */
