@@ -27,8 +27,8 @@
      * Shortcut to Elegant object creation
      */
     function elegant(el, opts) {
-      return new Elegant(el, opts)
-    };
+      return new Elegant(el, opts);
+    }
 
     function Elegant(el, opts) {
       this.opts = opts || {};
@@ -40,23 +40,23 @@
         if (typeof el === 'string') {
           this.ready(function() {
             for(var i = 0, els = self.sel(el, root), l = els.length; i < l; i++) {
-              elegant(els[i], opts)
+              elegant(els[i], opts);
             }
-          })
+          });
 
         } else if (typeof el === 'function') {
-          return this.ready(el)
+          return this.ready(el);
 
         } else {
           this.el = el;
 
           if (this.opts.minHeight) {
-            this.minHeight = (this.opts.minHeight == 'original') ? getHeight(el) : this.opts.minHeight
+            this.minHeight = (this.opts.minHeight == 'original') ? getHeight(el) : this.opts.minHeight;
           } else {
-            this.minHeight = 0
+            this.minHeight = 0;
           }
 
-          var resize = function() { self.resize.call(self, el) };
+          var resize = function() { self.resize.call(self, el); };
 
           apply(el, {
             'resize': 'none',
@@ -67,7 +67,7 @@
           attachEvent(el, 'propertychange', resize);
         }
       }
-    };
+    }
 
     /**
      * Resize element to fit its content.
@@ -79,7 +79,7 @@
       if (!(m = getMirror(el))) return;
 
       el.style.height = '';
-      el.style.height = max(getHeight(m), this.minHeight)
+      el.style.height = max(getHeight(m), this.minHeight);
     };
 
     /**
@@ -195,7 +195,7 @@
      * @return {String} Max from two units
      */
     function max(x, y) {
-      return (unitless(x) > unitless(y)) ? x : y
+      return (unitless(x) > unitless(y)) ? x : y;
     }
 
     /**
@@ -205,7 +205,7 @@
      */
     function unitless(d) {
       return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
-    };
+    }
 
     /**
      * Register the specified handler function to handle events of the specified
@@ -223,7 +223,7 @@
           return handler.call(target, e);
         });
       }
-    };
+    }
 
     /**
      * Returns the selector engine
@@ -236,13 +236,13 @@
       else {
         return doc.querySelectorAll
         ? function(s, r) {
-          return r.querySelectorAll(s)
+          return r.querySelectorAll(s);
         }
         : function() {
-          throw new Error('Elegant: no selector engine found')
-        }
+          throw new Error('Elegant: no selector engine found');
+        };
       }
-    };
+    }
 
     /**
      * Returns the existing mirror of the element or create new one.
@@ -263,14 +263,14 @@
 
       if (k = el.value) l = doc.createTextNode(k);
 
-      k = doc.createElement('span')
-      k.innerHTML = '&nbsp;'
+      k = doc.createElement('span');
+      k.innerHTML = '&nbsp;';
 
       if (l) m.appendChild(l);
       m.appendChild(k);
 
       return m;
-    };
+    }
 
     /**
      * Apply styles to element
@@ -282,7 +282,7 @@
       for (var prop in props) {
         el.style[camelize(prop)] = props[prop];
       }
-    };
+    }
 
     /**
      * Convert string with hyphens to camelCase (useful for convert css style
@@ -295,7 +295,7 @@
       return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
         return l.toUpperCase();
       });
-    };
+    }
 
     /**
      * Returns the computed element height
@@ -304,8 +304,8 @@
      * @return {String} The computed height of the element
      */
     function getHeight(el) {
-      return w.getComputedStyle(el).height
-    };
+      return w.getComputedStyle(el).height;
+    }
 
     return elegant;
 
