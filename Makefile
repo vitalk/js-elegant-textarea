@@ -29,7 +29,7 @@ docs: $(JSOBJS)
 #
 # PUBLISH GH-PAGES
 #
-gh-pages: $(JSOBJS)
+gh-pages: $(JSOBJS_COMPRESSED)
 	git clone git@github.com:vitalk/js-elegant-textarea.git gh-pages
 	cd gh-pages && git checkout gh-pages
 	cp -rv docs/* -t gh-pages/
