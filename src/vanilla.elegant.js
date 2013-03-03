@@ -13,9 +13,8 @@
    * Make a textarea elegant,
    * e.g. it expands to fit its content.
    *
-   * @param {String} el The textarea selector
-   * @param {Element} el The textarea node
-   * @param {Function} el Invoke passed function when the document is ready
+   * @param {String|Element|Function} el The textarea selector, textarea node
+   * or function that invoked when the document is ready
    * @param {Object} opts The options, sel - the selector engine
    */
   var Elegant = (function namespace() {
