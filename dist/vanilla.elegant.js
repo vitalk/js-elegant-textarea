@@ -18,6 +18,8 @@
    * @param {Object} opts The options
    * @param {Function} opts.sel The selector engine
    * @param {Function} opts.dom The DOM utility function
+   * @param {String} opts.minHeight The minimum height of the element, if
+   * 'original' passed then original element height used
    */
   var Elegant = (function namespace() {
 
