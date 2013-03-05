@@ -20,7 +20,9 @@
   var Elegant = (function namespace() {
 
     var doc = w.document,
-        root = doc.documentElement;
+        root = doc.documentElement,
+        // match dashed string for camelizing
+        rdashed = /-([0-9]|[a-z])/ig,
 
     /**
      * Shortcut to Elegant object creation
@@ -225,6 +227,19 @@
     }
 
     /**
+     * Convert string with hyphens to camelCase (useful for convert css style
+     * property to valid object property).
+     *
+     * @param {String} s The input string
+     * @return {String} The camelCase string
+     */
+    function camelize(s) {
+      return s.replace(rdashed, function(s, l) {
+        return l.toUpperCase();
+      });
+    }
+
+    /**
      * Returns the selector engine
      *
      * @param {Function} e The selector engine or nothing
@@ -281,19 +296,6 @@
       for (var prop in props) {
         el.style[camelize(prop)] = props[prop];
       }
-    }
-
-    /**
-     * Convert string with hyphens to camelCase (useful for convert css style
-     * property to valid object property).
-     *
-     * @param {String} s The input string
-     * @return {String} The camelCase string
-     */
-    function camelize(s) {
-      return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
-        return l.toUpperCase();
-      });
     }
 
     /**
