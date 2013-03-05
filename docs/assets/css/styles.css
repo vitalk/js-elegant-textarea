@@ -77,6 +77,25 @@ strong {
 .copy h1 + p {
   font-size: 1.333333em;
 }
+.notes {
+  color: #323232;
+  font-size: 0.866667em;
+  list-style: none;
+  margin-left: 0;
+}
+.notes li {
+  margin: 0;
+  padding: 0;
+}
+.notes li + .notes li {
+  margin-top: 0.175em;
+}
+.notes span {
+  color: #c11313;
+  text-align: right;
+  display: inline-block;
+  width: 1em;
+}
 section {
   margin: 0;
   padding: 0;
@@ -95,6 +114,9 @@ ul {
   padding: 0;
   margin: 0 0 0.7em 1.4em;
   list-style: disc;
+}
+ul sup {
+  color: #c11313;
 }
 li {
   margin: 0;
