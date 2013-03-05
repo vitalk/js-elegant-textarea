@@ -2,8 +2,9 @@
  * Elegant Textarea,
  * e.g. it expands to fit its content.
  *
- * Copyright © 2013 Vital Kudzelka.
- * Licensed under the MIT license http://opensource.org/licenses/MIT
+ * @version: 0.1
+ * @author:  Vital Kudzelka
+ * @license: MIT license http://opensource.org/licenses/MIT
  */
 (function(w, undefined) {
 
