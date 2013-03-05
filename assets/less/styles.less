@@ -65,12 +65,28 @@ strong { font-weight: bold; }
 .copy h1+p {
     font-size: 1.333333em; // 20px
 }
+.notes {
+    color: lighten(@color, 13);
+    font-size: 0.866667em; // 13px
+    list-style: none;
+    margin-left: 0;
+
+    li { .paragraph(@half/4); }
+    span {
+        color: @ribbon-light;
+        text-align: right;
+        display: inline-block;
+        width: 1em;
+    }
+}
 section { .paragraph(@line-height); }
 p { .paragraph; }
 ul {
     padding: 0;
     margin: 0 0 @half @line-height;
     list-style: disc;
+
+    sup { color: @ribbon-light; }
 }
 li {
     .paragraph(@half/2);

@@ -25,11 +25,16 @@
             <section class="features">
                 <h1>Features</h1>
                 <ul>
-                    <li>works on Chrome, FF, Opera</li>
-                    <li>vanilla javascript, 3.4<small>k</small> minified</li>
-                    <li>no dependencies</li>
+                    <li>works on Chrome 23, FF 10.11, Opera 12.01 <sup>*</sup></li>
+                    <li>vanilla javascript, 4.9<small>k</small> minified</li>
+                    <li>no dependencies <sup>**</sup></li>
                     <li>no extra markup</li>
                     <li>easy customization</li>
+                </ul>
+                <ul class="notes">
+                    <li><span>*</span> tested on vanilla version, without extra dependencies</li>
+                    <li><span>**</span> possible to plug external library to
+                    work with DOM (jQuery, Zepto, etc)</li>
                 </ul>
             </section>
             <section class="copy">
@@ -41,6 +46,7 @@
             </section>
         </div>
         <script src="assets/js/vanilla.elegant.js" type="text/javascript"></script>
+        <script src="assets/js/jquery.js" type="text/javascript"></script>
         <script type="text/javascript" charset="utf-8">
 
             Elegant('.js-elegant-textarea', {minHeight: 'original'});

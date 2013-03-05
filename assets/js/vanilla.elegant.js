@@ -13,15 +13,20 @@
    * Make a textarea elegant,
    * e.g. it expands to fit its content.
    *
-   * @param {String} el The textarea selector
-   * @param {Element} el The textarea node
-   * @param {Function} el Invoke passed function when the document is ready
+   * @param {String|Element|Function} el The textarea selector, textarea node
+   * or function that invoked when the document is ready
    * @param {Object} opts The options, sel - the selector engine
    */
   var Elegant = (function namespace() {
 
     var doc = w.document,
-        root = doc.documentElement;
+        root = doc.documentElement,
+        // match the number with or without dimension
+        runitless = /(^-?[\d\.]+)([a-z]*)$/g,
+        // match dashed string for camelizing
+        rdashed = /-([0-9]|[a-z])/ig,
+        // match the single tag
+        rtag = /^\s*<(\w+)>/;
 
     /**
      * Shortcut to Elegant object creation
@@ -33,6 +38,7 @@
     function Elegant(el, opts) {
       this.opts = opts || {};
       this.sel = getSelectorEngine(this.opts.sel);
+      this.dom = getDOMEngine(this.opts.dom);
 
       if (el) {
         var self = this;
@@ -47,21 +53,22 @@
         } else if (typeof el === 'function') {
           return this.ready(el);
 
-        } else {
+        } else if (isNode(el)) {
           this.el = el;
+          var e = this.dom(el);
 
           if (this.opts.minHeight) {
-            this.minHeight = (this.opts.minHeight == 'original') ? getHeight(el) : this.opts.minHeight;
+            this.minHeight = (this.opts.minHeight == 'original') ? e.height() : this.opts.minHeight;
           } else {
             this.minHeight = 0;
           }
 
-          var resize = function() { self.resize.call(self, el); };
-
-          apply(el, {
+          e.css({
             'resize': 'none',
             'overflow-y': 'hidden'
           });
+
+          var resize = function() { self.resize.call(self); };
 
           attachEvent(el, 'input', resize);
           attachEvent(el, 'propertychange', resize);
@@ -71,89 +78,17 @@
 
     /**
      * Resize element to fit its content.
-     *
-     * @param {Element} el The element to resize
      */
-    Elegant.prototype.resize = function(el, m) {
+    Elegant.prototype.resize = function() {
+      var m,
+          el = this.el;
+
       if (!el) return;
-      if (!(m = getMirror(el))) return;
+      if (!(m = getMirror(el, this.dom))) return;
 
-      el.style.height = '';
-      el.style.height = max(getHeight(m), this.minHeight);
-    };
-
-    /**
-     * Clone the element, inherit original style properties that affect on
-     * element size.
-     *
-     * @param {Element} el The element to clone
-     * @return {Element} The cloned element
-     */
-    Elegant.prototype.clone = function(el) {
-      var propNames = [
-        "border-bottom-width",
-        "border-left-width",
-        "border-right-width",
-        "border-top-width",
-        "border-width",
-        "border-style",
-        "box-sizing",
-        "font-family",
-        "font-size",
-        "font-style",
-        "font-variant",
-        "font-weight",
-        "letter-spacing",
-        "line-height",
-        "padding-top",
-        "padding-right",
-        "padding-bottom",
-        "padding-left",
-        "text-decoration",
-        "text-transform",
-        "text-indent",
-        "width",
-        "word-spacing"
-      ];
-      var mirror = {
-        'position'   : 'absolute',
-        'left'       : '-9999px',
-        'top'        : '0px',
-        'overflow-y' : 'hidden',
-        'word-wrap'  : 'break-word',
-        'white-space': 'pre-wrap'
-      };
-
-      var original = w.getComputedStyle(el),
-          rv = doc.createElement('div');
-
-      for(var prop, props = {}, i = 0, l = propNames.length; i < l; i++) {
-        prop = propNames[i];
-        props[prop] = original[camelize(prop)];
-      }
-
-      apply(rv, this.extend(props, mirror));
-
-      return rv;
-    };
-
-    /**
-     * Copy the enumerable properties of p to o, and return o
-     * If o and p have are property with the same name, o's property is
-     * overwritten. This function does not handle getters and setters or copy
-     * attributes.
-     *
-     * @param {Object} o The original object
-     * @param {Object} p The another object
-     * @return {Object} The object with properties of two objects
-     */
-    Elegant.prototype.extend = function(o, p) {
-      for (var prop in p) {
-        if (p.hasOwnProperty(prop)) {
-          o[prop] = p[prop];
-        }
-      }
-      return o;
+      el = this.dom(el);
+      el.css({'height': ''});
+      el.css({'height': max(m.height(), this.minHeight)});
     };
 
     /**
@@ -188,6 +123,187 @@
     };
 
     /**
+     * Simple DOM utility library with jQuery-like public API
+     *
+     * @param {String|Element|Dom} el The string to construct DOM node, the
+     * DOM node to process or another class instance
+     * @return {Dom} The current instance
+     */
+    var dom = (function() {
+
+      /**
+       * Normalize return value to Element
+       *
+       * @param {Element|Dom} el The element to process
+       * @return {Element} The original element
+       */
+      function toNode(el) {
+        return isNode(el) ? el : el.el;
+      }
+
+      /**
+       * Shortcut to DOM object creation
+       */
+      function dom(el) {
+        return new Dom(el);
+      }
+
+      function Dom(el) {
+        var n;
+
+        if (typeof el == 'string' && el !== '') {
+          var t = el.match(rtag);
+
+          if (t) {
+            n = doc.createElement(t[1].toLowerCase());
+          } else {
+            n = doc.createElement('div');
+            n.innerHTML = el;
+          }
+
+        } else {
+          n = toNode(el);
+        }
+
+        this.el = n;
+        this.support = (function() {
+          return {
+            classList: 'classList' in doc.createElement('p')
+          };
+        }());
+      }
+
+      /**
+       * Get the next sibling of the element
+       *
+       * @return {Dom} The next sibling
+       */
+      Dom.prototype.next = function() {
+        var el = this.el.nextSibling;
+        while (el && el.nodeType !== 1) {
+          el = el.nextSibling;
+        }
+
+        return el && dom(el);
+      };
+
+      /**
+       * Set the HTML content to element
+       *
+       * @param {String|Dom} h The HTML to insert
+       * @return {Dom} This instance
+       */
+      Dom.prototype.html = function(h) {
+        if (typeof h == 'string') this.el.innerHTML = h;
+        else this.append(dom(h));
+
+        return this;
+      };
+
+      /**
+       * Get the current value of the element
+       *
+       * @return {String} The element value
+       */
+      Dom.prototype.val = function() {
+        return this.el.value;
+      };
+
+      /**
+       * Add class to element
+       *
+       * @param {String} c The class name
+       * @return {Dom} This instance
+       */
+      Dom.prototype.addClass = function(c) {
+        if (this.support.classList) this.el.classList.add(c);
+        else if (!this.hasClass(c)) this.el.className = this.el.className + ' ' + c;
+
+        return this;
+      };
+
+      /**
+       * Returns the element has class or not
+       *
+       * @param {String} c The class name to check
+       * @return {Boolean} Has element class or not?
+       */
+      Dom.prototype.hasClass = function(c) {
+        return (this.support.classList) ? this.el.classList.contains(c) : this.el.className.search('\b' + c + '\b') != -1;
+      };
+
+      /**
+       * Insert content element after the current element
+       *
+       * @param {Element|Dom} el The element to insert
+       * @return {Dom} This instance
+       */
+      Dom.prototype.after = function(el) {
+        this.el.parentNode.insertBefore(toNode(el), this.el.nextSibling);
+
+        return this;
+      };
+
+      /**
+       * Append the passed element into the current element
+       *
+       * @param {Element|Dom} el The element to append
+       * @return {Dom} This instance
+       */
+      Dom.prototype.append = function(el) {
+        this.el.appendChild(toNode(el));
+
+        return this;
+      };
+
+      /**
+       * Returns the computed height of the element
+       *
+       * @return {String} The computed height of the element
+       */
+      Dom.prototype.height = function() {
+        return w.getComputedStyle(this.el).height;
+      };
+
+      /**
+       * Apply styles to element
+       *
+       * @param {Object} o The object with css property value pairs
+       * @return {Dom} This instance
+       */
+      Dom.prototype.css = function(o) {
+        for (var prop in o) {
+          this.el.style[camelize(prop)] = o[prop];
+        }
+
+        return this;
+      };
+
+      return dom;
+
+    }());
+
+    /**
+     * Returns the passed element is DOM Element or none
+     *
+     * @param {Object} el The element to check
+     * @return {Boolean} Is element node or text node?
+     */
+    function isNode(el) {
+      return el && el.nodeName && (el.nodeType == 1 || el.nodeType == 3);
+    }
+
+    /**
+     * Force convert value to string
+     *
+     * @param {String|Number} v The value to convert
+     * @return {String} The converted value
+     */
+    function toStr(v) {
+      return v.toString();
+    }
+
+    /**
      * Returns max from two units. On comparison uses unitless value.
      *
      * @param {String} x The 1st unit
@@ -204,7 +320,91 @@
      * @param {String} d A number, with or without dimension
      */
     function unitless(d) {
-      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
+      return parseInt(toStr(d).replace(runitless, '$1'));
+    }
+
+    /**
+     * Clone the element, inherit original style properties that affect on
+     * element size.
+     *
+     * @param {Element} el The element to clone
+     * @param {Function} dom The DOM manipulation library
+     * @return {Dom} The cloned element
+     */
+    function clone(el, dom) {
+      var propNames = [
+        "border-bottom-width",
+        "border-left-width",
+        "border-right-width",
+        "border-top-width",
+        "border-width",
+        "border-style",
+        "box-sizing",
+        "font-family",
+        "font-size",
+        "font-style",
+        "font-variant",
+        "font-weight",
+        "letter-spacing",
+        "line-height",
+        "padding-top",
+        "padding-right",
+        "padding-bottom",
+        "padding-left",
+        "text-decoration",
+        "text-transform",
+        "text-indent",
+        "width",
+        "word-spacing"
+      ];
+      var mirror = {
+        'position'   : 'absolute',
+        'left'       : '-9999px',
+        'top'        : '0px',
+        'overflow-y' : 'hidden',
+        'word-wrap'  : 'break-word',
+        'white-space': 'pre-wrap'
+      };
+
+      var original = w.getComputedStyle(el);
+
+      for(var prop, props = {}, i = 0, l = propNames.length; i < l; i++) {
+        prop = propNames[i];
+        props[prop] = original[camelize(prop)];
+      }
+
+      return dom('<div>').css(extend(props, mirror));
+
+    }
+
+    /**
+     * Returns the existing mirror of the element or create new one.
+     *
+     * @param {Element} el The original element
+     * @param {Function} dom The DOM utility library
+     * @return {Dom} The mirror element
+     */
+    function getMirror(el, dom) {
+      var k,
+          l = dom(el),
+          m = l.next();
+
+      if (m && m.hasClass('js-elegant-mirror')) {
+        m.html('');
+      } else {
+        m = clone(el, dom);
+        m.addClass('js-elegant-mirror');
+        l.after(m);
+      }
+
+      // does not allow mirror collapse whitespaces
+      if (l = l.val()) l = dom(doc.createTextNode(l));
+      k = dom('<span>').html('&nbsp;');
+
+      if (l) m.append(l);
+      m.append(k);
+
+      return m;
     }
 
     /**
@@ -223,6 +423,38 @@
           return handler.call(target, e);
         });
       }
+    }
+
+    /**
+     * Convert string with hyphens to camelCase (useful for convert css style
+     * property to valid object property).
+     *
+     * @param {String} s The input string
+     * @return {String} The camelCase string
+     */
+    function camelize(s) {
+      return s.replace(rdashed, function(s, l) {
+        return l.toUpperCase();
+      });
+    }
+
+    /**
+     * Copy the enumerable properties of p to o, and return o
+     * If o and p have are property with the same name, o's property is
+     * overwritten. This function does not handle getters and setters or copy
+     * attributes.
+     *
+     * @param {Object} o The original object
+     * @param {Object} p The another object
+     * @return {Object} The object with properties of two objects
+     */
+    function extend(o, p) {
+      for (var prop in p) {
+        if (p.hasOwnProperty(prop)) {
+          o[prop] = p[prop];
+        }
+      }
+      return o;
     }
 
     /**
@@ -245,66 +477,13 @@
     }
 
     /**
-     * Returns the existing mirror of the element or create new one.
+     * Returns the DOM manipulation library
      *
-     * @param {Element} el The original element
-     * @return {Element} The mirror element
+     * @param {Function} fn The DOM manipulation library or nothing
+     * @return {Function} The DOM manipulation library
      */
-    function getMirror(el) {
-      var k, l, m = el.nextSibling;
-
-      if (m && m.className == 'js-elegant-mirror') {
-        m.innerHTML = '';
-      } else {
-        m = Elegant.prototype.clone(el);
-        m.className = 'js-elegant-mirror';
-        el.parentNode.insertBefore(m, el.nextSibling);
-      }
-
-      if (k = el.value) l = doc.createTextNode(k);
-
-      k = doc.createElement('span');
-      k.innerHTML = '&nbsp;';
-
-      if (l) m.appendChild(l);
-      m.appendChild(k);
-
-      return m;
-    }
-
-    /**
-     * Apply styles to element
-     *
-     * @param {Element} el The document element that will be styled
-     * @param {Object} props The object with css property value pairs
-     */
-    function apply(el, props) {
-      for (var prop in props) {
-        el.style[camelize(prop)] = props[prop];
-      }
-    }
-
-    /**
-     * Convert string with hyphens to camelCase (useful for convert css style
-     * property to valid object property).
-     *
-     * @param {String} s The input string
-     * @return {String} The camelCase string
-     */
-    function camelize(s) {
-      return s.replace(/-([a-z]|[0-9])/ig, function(s, l) {
-        return l.toUpperCase();
-      });
-    }
-
-    /**
-     * Returns the computed element height
-     *
-     * @param {Element} el The DOM element
-     * @return {String} The computed height of the element
-     */
-    function getHeight(el) {
-      return w.getComputedStyle(el).height;
+    function getDOMEngine(fn) {
+      return fn ? fn : dom;
     }
 
     return elegant;
