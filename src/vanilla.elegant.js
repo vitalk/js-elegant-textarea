@@ -21,6 +21,8 @@
 
     var doc = w.document,
         root = doc.documentElement,
+        // match the number with or without dimension
+        runitless = /(^-?[\d\.]+)([a-z]*)$/g,
         // match dashed string for camelizing
         rdashed = /-([0-9]|[a-z])/ig,
 
@@ -82,6 +84,25 @@
       el.style.height = '';
       el.style.height = max(getHeight(m), this.minHeight);
     };
+
+    /**
+     * Force convert value to string
+     *
+     * @param {String|Number} v The value to convert
+     * @return {String} The converted value
+     */
+    function toStr(v) {
+      return v.toString();
+    }
+
+    /**
+     * Remove the unit of a dimension
+     *
+     * @param {String} d A number, with or without dimension
+     */
+    function unitless(d) {
+      return parseInt(toStr(d).replace(runitless, '$1'));
+    }
 
     /**
      * Clone the element, inherit original style properties that affect on
@@ -197,15 +218,6 @@
      */
     function max(x, y) {
       return (unitless(x) > unitless(y)) ? x : y;
-    }
-
-    /**
-     * Remove the unit of a dimension
-     *
-     * @param {String} d A number, with or without dimension
-     */
-    function unitless(d) {
-      return parseInt(d.replace(/(^-?[\d\.]+)([a-z]*)$/g, '$1'));
     }
 
     /**
