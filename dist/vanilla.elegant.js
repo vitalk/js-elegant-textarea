@@ -15,7 +15,9 @@
    *
    * @param {String|Element|Function} el The textarea selector, textarea node
    * or function that invoked when the document is ready
-   * @param {Object} opts The options, sel - the selector engine
+   * @param {Object} opts The options
+   * @param {Function} opts.sel The selector engine
+   * @param {Function} opts.dom The DOM utility function
    */
   var Elegant = (function namespace() {
 
