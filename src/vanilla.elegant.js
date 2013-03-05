@@ -50,7 +50,7 @@
         } else if (typeof el === 'function') {
           return this.ready(el);
 
-        } else {
+        } else if (isNode(el)) {
           this.el = el;
 
           if (this.opts.minHeight) {
@@ -84,6 +84,16 @@
       el.style.height = '';
       el.style.height = max(getHeight(m), this.minHeight);
     };
+
+    /**
+     * Returns the passed element is DOM Element or none
+     *
+     * @param {Object} el The element to check
+     * @return {Boolean} Is element node or text node?
+     */
+    function isNode(el) {
+      return el && el.nodeName && (el.nodeType == 1 || el.nodeType == 3);
+    }
 
     /**
      * Force convert value to string
