@@ -77,6 +77,7 @@
 
           attachEvent(el, 'input', resize);
           attachEvent(el, 'propertychange', resize);
+          this.resize.call(this);
         }
       }
     }
