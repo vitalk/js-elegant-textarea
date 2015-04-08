@@ -2,8 +2,9 @@
  * Elegant Textarea,
  * e.g. it expands to fit its content.
  *
- * Copyright © 2013 Vital Kudzelka.
- * Licensed under the MIT license http://opensource.org/licenses/MIT
+ * @version: 0.1.0
+ * @author:  Vital Kudzelka
+ * @license: MIT license http://opensource.org/licenses/MIT
  */
 (function(w, undefined) {
 
@@ -15,7 +16,11 @@
    *
    * @param {String|Element|Function} el The textarea selector, textarea node
    * or function that invoked when the document is ready
-   * @param {Object} opts The options, sel - the selector engine
+   * @param {Object} opts The options
+   * @param {Function} opts.sel The selector engine
+   * @param {Function} opts.dom The DOM utility function
+   * @param {String} opts.minHeight The minimum height of the element, if
+   * 'original' passed then original element height used
    */
   var Elegant = (function namespace() {
 
