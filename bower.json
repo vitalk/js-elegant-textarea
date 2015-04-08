@@ -1,0 +1,16 @@
+{
+  "name": "elegant-textarea",
+  "version": "0.1.0",
+  "homepage": "https://github.com/vitalk/js-elegant-textarea",
+  "authors": [
+    "Vital Kudzelka <vital.kudzelka@gmail.com>"
+  ],
+  "description": "Simple and elegant fit textarea size to its content",
+  "main": "src/vanilla.elegant.js",
+  "keywords": [
+    "js",
+    "javascript",
+    "textarea"
+  ],
+  "license": "MIT"
+}

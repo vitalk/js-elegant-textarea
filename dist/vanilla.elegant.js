@@ -2,7 +2,7 @@
  * Elegant Textarea,
  * e.g. it expands to fit its content.
  *
- * @version: 0.1
+ * @version: 0.1.0
  * @author:  Vital Kudzelka
  * @license: MIT license http://opensource.org/licenses/MIT
  */

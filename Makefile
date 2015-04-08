@@ -9,7 +9,8 @@ JSCOMPRESS = cat
 JSOBJS_COMPRESSED = $(JSOBJS:.js=.min.js)
 SRC = src/vanilla.elegant.js
 
-CURRENT = $(shell git describe --tags --long --always 2>/dev/null || echo unknown)
+CURRENT = $(shell git describe --tags --always 2>/dev/null || echo unknown)
+YEAR = $(shell date +"%Y")
 
 
 all: clean $(JSOBJS_COMPRESSED) docs
@@ -49,7 +50,7 @@ $(JSOBJS): $(SRC)
 
 
 $(JSOBJS_COMPRESSED): $(JSOBJS)
-	@echo -e "/**\n * The Elegant Textarea by Vital Kudzelka\n * Licensed under the MIT license\n * http://opensource.org/licenses/MIT\n */" > $@
+	@echo "/* The Elegant Textarea $(CURRENT) | (c) 2013-$(YEAR) Vital Kudzelka | http://opensource.org/licenses/MIT\n */" > $@
 	@$(JSCOMPRESS) $< >> $@
 	@echo "                                $(DONE)"
 
